@@ -17,12 +17,16 @@ Loopi es una tienda online hecha con React y Vite que simula un e-commerce moder
 
 ## 📁 Estructura del proyecto
 
+```bash
 /src
 ├── /components → Componentes reutilizables como Navbar, Footer, ProductCard
 ├── /pages → Vistas como Home, ProductDetails, About
 ├── /routes → Archivo con rutas definidas
 ├── /assets → Iconos, imágenes y el favicon
 └── App.jsx → App principal con el router y layout base
+```
+
+---
 
 ## 💡 Decisiones técnicas
 
@@ -40,10 +44,9 @@ cd loopi
 npm install
 npm run dev
 
+```
 
 Accede a http://localhost:5173 para ver la app en funcionamiento.
-
-```
 
 ## 📎 Detalles extra
 
