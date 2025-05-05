@@ -54,6 +54,12 @@ Accede a http://localhost:5173 para ver la app en funcionamiento.
 - El favicon fue generado con la letra L en negro, con tipografía System-UI Bold.
 - Está preparado para añadir filtros y mejoras futuras como carrito, login o categorías.
 
+---
+
+🚀 El proyecto está desplegado en Vercel: [Ver versión en línea](https://loopi.vercel.app)
+
+---
+
 ## 👤 Autor
 
 Francesc Gimenez Gil

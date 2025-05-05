@@ -113,9 +113,8 @@ const About = () => {
 
       <h2 className="text-2xl font-semibold mt-6 mb-2">📁 Despliegue</h2>
       <p>
-        El proyecto está preparado para desplegar en plataformas como{" "}
-        <strong>Vercel</strong> o <strong>Netlify</strong>, usando{" "}
-        <code>Vite</code> para construcción rápida.
+        El proyecto está desplegado en la plataforma <strong>Vercel</strong>{" "}
+        usando <code>Vite</code> para construcción rápida.
       </p>
     </section>
   );
