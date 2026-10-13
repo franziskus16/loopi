@@ -4,6 +4,8 @@ A demo online shop built with React and TypeScript. It loads the full catalogue 
 
 **Live demo:** https://loopi.vercel.app
 
+![Loopi product list](docs/home.png)
+
 ## Features
 
 - **Full catalogue** of almost 200 products, loaded in a single request with only the fields the list needs.
