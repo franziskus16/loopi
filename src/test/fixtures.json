@@ -1,0 +1,44 @@
+{
+  "list": {
+    "products": [
+      { "id": 1, "title": "Essence Mascara Lash Princess", "price": 9.99, "discountPercentage": 10.48, "rating": 2.56, "category": "beauty", "thumbnail": "https://cdn.dummyjson.com/product-images/beauty/essence-mascara-lash-princess/thumbnail.webp" },
+      { "id": 6, "title": "Calvin Klein CK One", "price": 49.99, "discountPercentage": 1.89, "rating": 4.37, "category": "fragrances", "thumbnail": "https://cdn.dummyjson.com/product-images/fragrances/calvin-klein-ck-one/thumbnail.webp" },
+      { "id": 11, "title": "Annibale Colombo Bed", "price": 1899.99, "discountPercentage": 8.57, "rating": 4.77, "category": "furniture", "thumbnail": "https://cdn.dummyjson.com/product-images/furniture/annibale-colombo-bed/thumbnail.webp" },
+      { "id": 21, "title": "Cucumber", "price": 1.49, "discountPercentage": 0.16, "rating": 4.07, "category": "groceries", "thumbnail": "https://cdn.dummyjson.com/product-images/groceries/cucumber/thumbnail.webp" },
+      { "id": 31, "title": "Lemon", "price": 0.79, "discountPercentage": 9.7, "rating": 3.53, "category": "groceries", "thumbnail": "https://cdn.dummyjson.com/product-images/groceries/lemon/thumbnail.webp" },
+      { "id": 41, "title": "Tissue Paper Box", "price": 2.49, "discountPercentage": 13.28, "rating": 2.69, "category": "groceries", "thumbnail": "https://cdn.dummyjson.com/product-images/groceries/tissue-paper-box/thumbnail.webp" },
+      { "id": 61, "title": "Hand Blender", "price": 34.99, "discountPercentage": 17.02, "rating": 3.86, "category": "kitchen-accessories", "thumbnail": "https://cdn.dummyjson.com/product-images/kitchen-accessories/hand-blender/thumbnail.webp" },
+      { "id": 81, "title": "Lenovo Yoga 920", "price": 1099.99, "discountPercentage": 6.55, "rating": 2.86, "category": "laptops", "thumbnail": "https://cdn.dummyjson.com/product-images/laptops/lenovo-yoga-920/thumbnail.webp" },
+      { "id": 101, "title": "Apple AirPods Max Silver", "price": 549.99, "discountPercentage": 13.67, "rating": 3.47, "category": "mobile-accessories", "thumbnail": "https://cdn.dummyjson.com/product-images/mobile-accessories/apple-airpods-max-silver/thumbnail.webp" },
+      { "id": 121, "title": "iPhone 5s", "price": 199.99, "discountPercentage": 12.91, "rating": 2.83, "category": "smartphones", "thumbnail": "https://cdn.dummyjson.com/product-images/smartphones/iphone-5s/thumbnail.webp" },
+      { "id": 151, "title": "Tennis Ball", "price": 6.99, "discountPercentage": 11.76, "rating": 4.06, "category": "sports-accessories", "thumbnail": "https://cdn.dummyjson.com/product-images/sports-accessories/tennis-ball/thumbnail.webp" },
+      { "id": 181, "title": "Marni Red & Black Suit", "price": 179.99, "discountPercentage": 19.02, "rating": 4.48, "category": "womens-dresses", "thumbnail": "https://cdn.dummyjson.com/product-images/womens-dresses/marni-red-&-black-suit/thumbnail.webp" }
+    ],
+    "total": 12,
+    "skip": 0,
+    "limit": 12
+  },
+  "detail": {
+    "id": 1,
+    "title": "Essence Mascara Lash Princess",
+    "description": "The Essence Mascara Lash Princess is a popular mascara known for its volumizing and lengthening effects. Achieve dramatic lashes with this long-lasting and cruelty-free formula.",
+    "category": "beauty",
+    "price": 9.99,
+    "discountPercentage": 10.48,
+    "rating": 2.56,
+    "stock": 99,
+    "brand": "Essence",
+    "sku": "BEA-ESS-ESS-001",
+    "shippingInformation": "Ships in 3-5 business days",
+    "availabilityStatus": "In Stock",
+    "returnPolicy": "No return policy",
+    "reviews": [
+      { "rating": 3, "comment": "Would not recommend!", "reviewerName": "Eleanor Collins" },
+      { "rating": 4, "comment": "Very satisfied!", "reviewerName": "Lucas Gordon" }
+    ],
+    "images": [
+      "https://cdn.dummyjson.com/product-images/beauty/essence-mascara-lash-princess/1.webp"
+    ],
+    "thumbnail": "https://cdn.dummyjson.com/product-images/beauty/essence-mascara-lash-princess/thumbnail.webp"
+  }
+}

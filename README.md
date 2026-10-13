@@ -1,68 +1,51 @@
-# Cymit Frontend Test (React)
+# Loopi
 
----
+A demo online shop built with React and TypeScript. It loads the full catalogue from the [DummyJSON products API](https://dummyjson.com/docs/products), with search, category filters, a detail page for every product and a working cart.
 
-# 🛍️ Loopi
+**Live demo:** https://loopi.vercel.app
 
-Loopi es una tienda online hecha con React y Vite que simula un e-commerce moderno, consumiendo datos desde la API pública de [dummyjson.com](https://dummyjson.com/). El catálogo contiene productos variados como maquillaje, muebles, perfumes, ropa o comida.
+## Features
 
-## 🔧 Tecnologías utilizadas
+- **Full catalogue** of almost 200 products, loaded in a single request with only the fields the list needs.
+- **Search and category filter** that work together, with a live result count and a "Clear filters" shortcut.
+- **Product page** with an image gallery, real ratings and review count, discount, stock, shipping and return details.
+- **Cart** with quantities, subtotal and a demo checkout. It's saved in the browser, so it survives a reload.
+- **Loading, empty, error and "not found" states**, announced to screen readers, with a retry button when the API fails.
+- **Shareable links.** Every product has its own URL that works when opened directly or after a refresh.
+- **Accessible.** Labelled form fields, keyboard-friendly gallery and quantity controls, a skip link and an active state in the navigation.
 
-- **React** + **Vite** — Framework principal y entorno de desarrollo rápido.
-- **TailwindCSS** — Utilizado para un diseño responsive, limpio y modular.
-- **React Router** — Para el sistema de navegación entre vistas.
-- **Fetch API** — Para consumo de la API externa.
-- **dummyjson.com API** — Fuente de datos dinámica con más de 100 productos.
-- **Favicon personalizado** — Letra “L” en negrita con tipografía `System-UI`.
+## Tech
 
-## 📁 Estructura del proyecto
+- React 19 and TypeScript (strict) with Vite
+- React Router 7
+- Cart state with Context and `useReducer`, persisted to `localStorage`
+- Tailwind CSS
+- Axios, wrapped in a small typed service layer
+- Vitest and React Testing Library
+- GitHub Actions (lint, type check, tests and build on every push), deployed on Vercel
 
-```bash
-/src
-├── /components → Componentes reutilizables como Header, Footer, ProductCard, SearchBar.
-├── /pages → Vistas como Home, ProductDetails, About.
-├── /services → Configuración de Axios centralizada para consumir la API de DummyJSON.
-├── index.css → Archivo principal de estilos con la configuración de Tailwind CSS.
-└── App.jsx → App principal con el router y layout base
+## Project structure
+
+```
+src/
+├── cart/         # cartReducer (pure, unit-tested) and CartContext
+├── components/   # Header, ProductCard, SearchBar, CategoryFilter, QuantityInput, Rating…
+├── hooks/        # useProducts / useProduct: data loading with loading and error states
+├── pages/        # Home, ProductDetail, Cart, About
+├── services/     # API calls
+├── utils/        # Price and category formatting
+└── types.ts      # Product types shared across the app
 ```
 
----
+## Tests
 
-## 💡 Decisiones técnicas
+18 tests covering the formatting helpers, every cart action, and the main user journeys rendered as a whole app: browsing and filtering, API errors with retry, product pages, products that don't exist, and adding, changing and removing items in the cart.
 
-- **Tailwind** fue elegido por su integración rápida y estilos utilitarios, ideales para prototipar y escalar componentes sin sobrecargar CSS.
-- **React Router DOM** permite una navegación fluida tipo SPA, sin recarga de página.
-- Se implementó `w-full` condicional para adaptarse a mobile (`w-full md:w-auto`) y se usó `grid` para maquetación flexible.
-- El catálogo de productos es dinámico: se mapea desde la API, y no es contenido estático.
-- Se añadió una página `/about` que replica este README como documentación accesible desde la app.
-
-## 🚀 Cómo ejecutar el proyecto
+## Running it
 
 ```bash
-git clone https://github.com/franziskus16/loopi.git
-cd loopi
 npm install
-npm run dev
-
+npm run dev       # http://localhost:8010
+npm run test:ci   # run the tests once
+npm run build     # type check and production build in dist/
 ```
-
-Accede a http://localhost:5173 para ver la app en funcionamiento.
-
-## 📎 Detalles extra
-
-- El diseño tiene header, footer y menú responsive.
-- El favicon fue generado con la letra L en negro, con tipografía System-UI Bold.
-- Está preparado para añadir filtros y mejoras futuras como carrito, login o categorías.
-
----
-
-🚀 El proyecto está desplegado en Vercel: [Ver versión en línea](https://loopi.vercel.app)
-
----
-
-## 👤 Autor
-
-Francesc Gimenez Gil
-
-Frontend Developer — Barcelona (Catalonia)
-[francescgimenez.com](https://francescgimenez.com) • github.com/franziskus16
