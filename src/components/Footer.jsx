@@ -1,20 +1,15 @@
-const Footer = () => {
-  return (
-    <footer className="bg-gray-100 text-gray-700 py-6">
-      <div className="container mx-auto px-4 text-center">
-        <p className="text-sm">
-          &copy; {new Date().getFullYear()} Loopi. Created by{" "}
-          <a
-            className="underline"
-            href="https://francescgimenez.com"
-            target="_blank"
-          >
-            Francesc Gimenez
-          </a>
-        </p>
-      </div>
-    </footer>
-  );
-};
+const Footer = () => (
+  <footer className="bg-gray-100 py-6 text-gray-700">
+    <div className="container mx-auto px-4 text-center text-sm">
+      <p>
+        Loopi is a demo shop by{" "}
+        <a className="underline" href="https://github.com/franziskus16">
+          Francesc Gimenez
+        </a>
+        . Product data from DummyJSON.
+      </p>
+    </div>
+  </footer>
+);
 
 export default Footer;

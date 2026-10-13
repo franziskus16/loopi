@@ -1,20 +1,23 @@
+import { formatCategory } from "../utils/format";
+
 const CategoryFilter = ({ categories, selected, onChange }) => (
   <div>
-    <label htmlFor="category">
-      <select
-        id="category"
-        value={selected}
-        onChange={onChange}
-        className="block w-full md:w-auto pr-10 px-3 py-3 mb-4 border border-gray-200 bg-white rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-494 focus:border-indigo-500 sm:text-sm"
-      >
-        <option value="">All categories</option>
-        {categories.map((cat) => (
-          <option key={cat} value={cat}>
-            {cat}
-          </option>
-        ))}
-      </select>
+    <label htmlFor="category" className="mb-1 block text-sm font-medium text-gray-700">
+      Category
     </label>
+    <select
+      id="category"
+      value={selected}
+      onChange={(event) => onChange(event.target.value)}
+      className="block w-full rounded-md border border-gray-300 bg-white px-3 py-2.5 sm:w-auto"
+    >
+      <option value="">All categories</option>
+      {categories.map((category) => (
+        <option key={category} value={category}>
+          {formatCategory(category)}
+        </option>
+      ))}
+    </select>
   </div>
 );
 

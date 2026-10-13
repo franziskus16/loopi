@@ -1,85 +1,110 @@
-import { useState, useEffect } from "react";
-import { getAllProducts } from "../services/api";
-import SearchBar from "../components/SearchBar";
+import { useEffect, useMemo, useState } from "react";
 import CategoryFilter from "../components/CategoryFilter";
 import ProductCard from "../components/ProductCard";
+import SearchBar from "../components/SearchBar";
+import StatusMessage from "../components/StatusMessage";
+import { getAllProducts } from "../services/api";
 
 const Home = () => {
   const [products, setProducts] = useState([]);
+  const [status, setStatus] = useState("loading");
   const [search, setSearch] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("");
 
-  const categories = [...new Set(products.map((p) => p.category))];
-
-  const filteredProducts = products
-    .filter((product) =>
-      product.title.toLowerCase().includes(search.toLowerCase())
-    )
-    .filter((product) =>
-      selectedCategory ? product.category === selectedCategory : true
-    );
+  const loadProducts = async () => {
+    setStatus("loading");
+    try {
+      setProducts(await getAllProducts());
+      setStatus("ready");
+    } catch {
+      setStatus("error");
+    }
+  };
 
   useEffect(() => {
-    const fetchProducts = async () => {
-      try {
-        const response = await getAllProducts();
-        setProducts(response.data.products);
-      } catch (error) {
-        console.error("Error fetching products:", error);
-      }
-    };
-
-    fetchProducts();
+    document.title = "Loopi";
+    loadProducts();
   }, []);
 
-  return (
-    <div className="p-4">
-      <header>
-        <h2 className="text-xl font-bold text-gray-900 sm:text-3xl">
-          Product Collection
-        </h2>
+  const categories = useMemo(
+    () => [...new Set(products.map((p) => p.category))].sort(),
+    [products]
+  );
 
-        <p className="mt-4 max-w-md text-gray-500">
-          Lorem ipsum, dolor sit amet consectetur adipisicing elit. Itaque
-          praesentium cumque iure dicta incidunt est ipsam, officia dolor fugit
-          natus?
+  const filteredProducts = useMemo(() => {
+    const query = search.trim().toLowerCase();
+    return products.filter(
+      (product) =>
+        product.title.toLowerCase().includes(query) &&
+        (!selectedCategory || product.category === selectedCategory)
+    );
+  }, [products, search, selectedCategory]);
+
+  const hasFilters = search !== "" || selectedCategory !== "";
+
+  return (
+    <div className="container mx-auto px-4 py-10">
+      <header className="max-w-2xl">
+        <h1 className="text-3xl font-bold text-gray-900 sm:text-4xl">Product collection</h1>
+        <p className="mt-3 text-gray-600">
+          Beauty, furniture, fragrances, groceries and more. Search by name or narrow the list by
+          category.
         </p>
       </header>
 
-      <div className="mt-8 sm:flex sm:items-center sm:justify-between">
-        <div className="sm:flex sm:gap-4">
-          <SearchBar
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-          />
-
-          <div className="relative">
-            <CategoryFilter
-              categories={categories}
-              selected={selectedCategory}
-              onChange={(e) => setSelectedCategory(e.target.value)}
-            />
-          </div>
-          <div className="relative">
-            {" "}
-            <button
-              onClick={() => {
-                setSearch("");
-                setSelectedCategory("");
-              }}
-              className="text-sm px-4 py-2 text-gray-400 hover:text-gray-500 transition hover:underline"
-            >
-              Reset
-            </button>
-          </div>
-        </div>
+      <div className="mt-8 flex flex-col gap-4 sm:flex-row sm:items-end">
+        <SearchBar value={search} onChange={setSearch} />
+        <CategoryFilter
+          categories={categories}
+          selected={selectedCategory}
+          onChange={setSelectedCategory}
+        />
+        {hasFilters && (
+          <button
+            type="button"
+            onClick={() => {
+              setSearch("");
+              setSelectedCategory("");
+            }}
+            className="self-start px-2 py-2.5 text-sm text-gray-600 underline-offset-4 hover:text-gray-900 hover:underline sm:self-auto"
+          >
+            Clear filters
+          </button>
+        )}
       </div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 mt-4">
-        {filteredProducts.map((product) => (
-          <ProductCard key={product.id} product={product} />
-        ))}
-      </div>
+      {status === "loading" && <StatusMessage title="Loading products…" />}
+
+      {status === "error" && (
+        <StatusMessage kind="error" title="We couldn't load the products.">
+          <button
+            type="button"
+            onClick={loadProducts}
+            className="rounded-md bg-gray-900 px-4 py-2 text-sm font-medium text-white"
+          >
+            Try again
+          </button>
+        </StatusMessage>
+      )}
+
+      {status === "ready" && (
+        <>
+          <p className="mt-6 text-sm text-gray-600" role="status">
+            {filteredProducts.length} {filteredProducts.length === 1 ? "product" : "products"}
+          </p>
+          {filteredProducts.length > 0 ? (
+            <ul className="mt-4 grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+              {filteredProducts.map((product) => (
+                <li key={product.id}>
+                  <ProductCard product={product} />
+                </li>
+              ))}
+            </ul>
+          ) : (
+            <StatusMessage kind="empty" title="No products match your search." />
+          )}
+        </>
+      )}
     </div>
   );
 };
