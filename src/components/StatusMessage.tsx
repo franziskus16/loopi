@@ -1,5 +1,13 @@
+import type { ReactNode } from "react";
+
+interface Props {
+  kind?: "loading" | "empty" | "error";
+  title: string;
+  children?: ReactNode;
+}
+
 /** Loading, empty and error states, announced to screen readers. */
-const StatusMessage = ({ kind = "loading", title, children }) => (
+const StatusMessage = ({ kind = "loading", title, children }: Props) => (
   <div
     role={kind === "error" ? "alert" : "status"}
     className={`my-10 flex flex-col items-center gap-3 rounded-lg border border-dashed p-10 text-center ${

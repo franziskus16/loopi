@@ -1,17 +1,18 @@
 import { Link } from "react-router-dom";
+import type { ProductSummary } from "../types";
 import { formatCategory, formatPrice, originalPrice } from "../utils/format";
 import Rating from "./Rating";
 
-const ProductCard = ({ product }) => {
+const ProductCard = ({ product }: { product: ProductSummary }) => {
   const before = originalPrice(product.price, product.discountPercentage);
 
   return (
     <Link
       to={`/product/${product.id}`}
-      className="group flex flex-col overflow-hidden rounded-lg border border-gray-200 bg-white transition hover:shadow-lg"
+      className="group flex h-full flex-col overflow-hidden rounded-lg border border-gray-200 bg-white transition hover:shadow-lg"
     >
       <img
-        className="aspect-square w-full object-cover transition group-hover:scale-105"
+        className="aspect-square w-full bg-gray-100 object-cover transition group-hover:scale-105"
         src={product.thumbnail}
         alt=""
         loading="lazy"

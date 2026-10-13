@@ -1,6 +1,12 @@
 import { formatCategory } from "../utils/format";
 
-const CategoryFilter = ({ categories, selected, onChange }) => (
+interface Props {
+  categories: string[];
+  selected: string;
+  onChange: (category: string) => void;
+}
+
+const CategoryFilter = ({ categories, selected, onChange }: Props) => (
   <div>
     <label htmlFor="category" className="mb-1 block text-sm font-medium text-gray-700">
       Category

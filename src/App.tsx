@@ -1,7 +1,9 @@
-import { BrowserRouter as Router, Link, Route, Routes } from "react-router-dom";
+import { BrowserRouter, Link, Route, Routes } from "react-router-dom";
+import { CartProvider } from "./cart/CartContext";
 import Footer from "./components/Footer";
 import Header from "./components/Header";
 import About from "./pages/About";
+import Cart from "./pages/Cart";
 import Home from "./pages/Home";
 import ProductDetail from "./pages/ProductDetail";
 
@@ -14,21 +16,29 @@ const NotFound = () => (
   </div>
 );
 
-function App() {
+/** Routes and layout, without the router, so tests can wrap it in a MemoryRouter. */
+export function AppRoutes() {
   return (
-    <Router>
+    <CartProvider>
       <Header />
       <main id="main" className="min-h-[calc(100vh-160px)]">
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/about" element={<About />} />
+          <Route path="/cart" element={<Cart />} />
           <Route path="/product/:id" element={<ProductDetail />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </main>
       <Footer />
-    </Router>
+    </CartProvider>
   );
 }
 
-export default App;
+export default function App() {
+  return (
+    <BrowserRouter>
+      <AppRoutes />
+    </BrowserRouter>
+  );
+}

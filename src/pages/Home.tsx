@@ -3,42 +3,37 @@ import CategoryFilter from "../components/CategoryFilter";
 import ProductCard from "../components/ProductCard";
 import SearchBar from "../components/SearchBar";
 import StatusMessage from "../components/StatusMessage";
-import { getAllProducts } from "../services/api";
+import { useProducts } from "../hooks/useProducts";
+import type { ProductSummary } from "../types";
+
+/** Case-insensitive title search combined with an optional category. */
+// eslint-disable-next-line react-refresh/only-export-components
+export function filterProducts(products: ProductSummary[], search: string, category: string) {
+  const query = search.trim().toLowerCase();
+  return products.filter(
+    (product) =>
+      product.title.toLowerCase().includes(query) && (!category || product.category === category),
+  );
+}
 
 const Home = () => {
-  const [products, setProducts] = useState([]);
-  const [status, setStatus] = useState("loading");
+  const { products, status, retry } = useProducts();
   const [search, setSearch] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("");
 
-  const loadProducts = async () => {
-    setStatus("loading");
-    try {
-      setProducts(await getAllProducts());
-      setStatus("ready");
-    } catch {
-      setStatus("error");
-    }
-  };
-
   useEffect(() => {
     document.title = "Loopi";
-    loadProducts();
   }, []);
 
   const categories = useMemo(
     () => [...new Set(products.map((p) => p.category))].sort(),
-    [products]
+    [products],
   );
 
-  const filteredProducts = useMemo(() => {
-    const query = search.trim().toLowerCase();
-    return products.filter(
-      (product) =>
-        product.title.toLowerCase().includes(query) &&
-        (!selectedCategory || product.category === selectedCategory)
-    );
-  }, [products, search, selectedCategory]);
+  const filteredProducts = useMemo(
+    () => filterProducts(products, search, selectedCategory),
+    [products, search, selectedCategory],
+  );
 
   const hasFilters = search !== "" || selectedCategory !== "";
 
@@ -79,7 +74,7 @@ const Home = () => {
         <StatusMessage kind="error" title="We couldn't load the products.">
           <button
             type="button"
-            onClick={loadProducts}
+            onClick={retry}
             className="rounded-md bg-gray-900 px-4 py-2 text-sm font-medium text-white"
           >
             Try again

@@ -1,66 +1,72 @@
 import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
+import { useCart } from "../cart/CartContext";
+import QuantityInput from "../components/QuantityInput";
 import Rating from "../components/Rating";
 import StatusMessage from "../components/StatusMessage";
-import { getProductById } from "../services/api";
+import { useProduct } from "../hooks/useProducts";
 import { formatCategory, formatPrice, originalPrice } from "../utils/format";
+
+const BackLink = () => (
+  <Link to="/" className="text-sm text-gray-600 underline-offset-4 hover:text-gray-900 hover:underline">
+    ← Back to all products
+  </Link>
+);
 
 const ProductDetail = () => {
   const { id } = useParams();
-  const [product, setProduct] = useState(null);
-  const [status, setStatus] = useState("loading");
-  const [mainImage, setMainImage] = useState(0);
+  const { product, status } = useProduct(id);
+  const { dispatch } = useCart();
+  const [imageIndex, setImageIndex] = useState(0);
+  const [quantity, setQuantity] = useState(1);
+  const [added, setAdded] = useState<number | null>(null);
 
   useEffect(() => {
-    let cancelled = false;
-    setStatus("loading");
-    setMainImage(0);
-
-    getProductById(id)
-      .then((data) => {
-        if (cancelled) return;
-        setProduct(data);
-        setStatus("ready");
-        document.title = `${data.title} · Loopi`;
-      })
-      .catch((error) => {
-        if (!cancelled) setStatus(error.response?.status === 404 ? "not-found" : "error");
-      });
-
-    return () => {
-      cancelled = true;
-    };
+    setImageIndex(0);
+    setQuantity(1);
+    setAdded(null);
   }, [id]);
 
-  const backLink = (
-    <Link to="/" className="text-sm text-gray-600 underline-offset-4 hover:text-gray-900 hover:underline">
-      ← Back to all products
-    </Link>
-  );
+  useEffect(() => {
+    if (product) document.title = `${product.title} · Loopi`;
+  }, [product]);
 
-  if (status === "loading") return <div className="container mx-auto px-4"><StatusMessage title="Loading product…" /></div>;
-  if (status === "not-found" || status === "error") {
+  if (status === "loading") {
+    return (
+      <div className="container mx-auto px-4">
+        <StatusMessage title="Loading product…" />
+      </div>
+    );
+  }
+
+  if (status !== "ready" || !product) {
     return (
       <div className="container mx-auto px-4">
         <StatusMessage
           kind="error"
           title={status === "not-found" ? "This product doesn't exist." : "We couldn't load this product."}
         >
-          {backLink}
+          <BackLink />
         </StatusMessage>
       </div>
     );
   }
 
   const before = originalPrice(product.price, product.discountPercentage);
+  const outOfStock = product.stock === 0;
+
+  const addToCart = () => {
+    dispatch({ type: "add", product, quantity });
+    setAdded(quantity);
+  };
 
   return (
     <div className="container mx-auto px-4 py-8">
-      {backLink}
+      <BackLink />
       <div className="mt-6 grid gap-10 md:grid-cols-2">
         <div>
           <img
-            src={product.images[mainImage]}
+            src={product.images[imageIndex] ?? product.thumbnail}
             alt={product.title}
             className="aspect-square w-full rounded-lg bg-gray-100 object-contain"
           />
@@ -70,10 +76,10 @@ const ProductDetail = () => {
                 <button
                   key={image}
                   type="button"
-                  onClick={() => setMainImage(index)}
+                  onClick={() => setImageIndex(index)}
                   aria-label={`Show image ${index + 1} of ${product.images.length}`}
-                  aria-pressed={index === mainImage}
-                  className={`shrink-0 rounded-md border-2 ${index === mainImage ? "border-gray-900" : "border-transparent opacity-70 hover:opacity-100"}`}
+                  aria-pressed={index === imageIndex}
+                  className={`shrink-0 rounded-md border-2 ${index === imageIndex ? "border-gray-900" : "border-transparent opacity-70 hover:opacity-100"}`}
                 >
                   <img src={image} alt="" className="size-16 rounded object-cover sm:size-20" />
                 </button>
@@ -90,7 +96,9 @@ const ProductDetail = () => {
           <h1 className="text-3xl font-bold text-gray-900">{product.title}</h1>
           <div className="flex items-center gap-2">
             <Rating value={product.rating} />
-            <span className="text-sm text-gray-600">({product.reviews.length} reviews)</span>
+            <span className="text-sm text-gray-600">
+              ({product.reviews.length} {product.reviews.length === 1 ? "review" : "reviews"})
+            </span>
           </div>
           <p>
             <span className="text-3xl font-semibold text-gray-900">{formatPrice(product.price)}</span>
@@ -103,7 +111,29 @@ const ProductDetail = () => {
           </p>
           <p className="text-gray-700">{product.description}</p>
 
-          <dl className="mt-2 grid grid-cols-2 gap-x-6 gap-y-3 rounded-lg border border-gray-200 p-5 text-sm">
+          <div className="flex flex-wrap items-center gap-4">
+            <QuantityInput value={quantity} onChange={setQuantity} label="Quantity" />
+            <button
+              type="button"
+              onClick={addToCart}
+              disabled={outOfStock}
+              className="rounded-md bg-gray-900 px-6 py-2.5 font-medium text-white transition hover:bg-gray-700 disabled:opacity-50"
+            >
+              {outOfStock ? "Out of stock" : "Add to cart"}
+            </button>
+          </div>
+          <p className="min-h-6 text-sm text-green-700" role="status">
+            {added && (
+              <>
+                Added {added} to your cart.{" "}
+                <Link to="/cart" className="underline">
+                  View cart
+                </Link>
+              </>
+            )}
+          </p>
+
+          <dl className="grid grid-cols-2 gap-x-6 gap-y-3 rounded-lg border border-gray-200 p-5 text-sm">
             <div>
               <dt className="text-gray-500">Availability</dt>
               <dd className="font-medium">{product.availabilityStatus}</dd>

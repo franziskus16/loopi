@@ -1,4 +1,9 @@
-const SearchBar = ({ value, onChange }) => (
+interface Props {
+  value: string;
+  onChange: (value: string) => void;
+}
+
+const SearchBar = ({ value, onChange }: Props) => (
   <div className="w-full sm:max-w-sm">
     <label htmlFor="search" className="mb-1 block text-sm font-medium text-gray-700">
       Search
